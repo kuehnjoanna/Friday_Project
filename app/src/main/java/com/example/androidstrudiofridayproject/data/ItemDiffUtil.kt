@@ -20,4 +20,5 @@ class ItemDiffUtil: ItemCallback<Note>(){
         Log.d("areItemsTheSame", "result: $result oldItem: $oldItem, newItem: $newItem")
         return result
     }
+
 }

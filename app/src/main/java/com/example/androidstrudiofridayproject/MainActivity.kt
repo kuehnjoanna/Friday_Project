@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -22,11 +23,12 @@ import com.example.androidstrudiofridayproject.data.NotesList
 import com.example.androidstrudiofridayproject.data.model.Note
 import com.example.androidstrudiofridayproject.databinding.ActivityMainBinding
 import com.example.androidstrudiofridayproject.databinding.DialogAddNoteBinding
+import com.example.androidstrudiofridayproject.databinding.NoteItemBinding
 import java.lang.IllegalStateException
-
+var listOfNotes = NotesList().loadItems().toMutableList()
 class MainActivity : AppCompatActivity() {
 
-    var listOfNotes = NotesList().loadItems()
+  //  var listOfNotes = NotesList().loadItems()
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NoteAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +45,15 @@ class MainActivity : AppCompatActivity() {
         //adding list to a view (?!)
         adapter.submitList(listOfNotes)
         binding.recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : NoteAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
 
+                listOfNotes.removeAt(position)
+                adapter.notifyItemRemoved(position)
+Toast.makeText(this@MainActivity, "clicked! on $position", Toast.LENGTH_SHORT).show()
+            }
+        }
+        )
 
 
       showAddNoteDialog()
@@ -57,6 +67,26 @@ class MainActivity : AppCompatActivity() {
             this.startOffset = startOffSet
         }
         startAnimation(slideup)
+    }
+
+    fun deleteNote (){
+
+        var binding = NoteItemBinding.inflate(layoutInflater)
+        val view = binding.root
+
+       binding.noteTitleTV.setOnClickListener {
+
+
+            AlertDialog.Builder(this)
+                .setTitle("delete?")
+                .setPositiveButton("yes"){_,_ ->
+                    //listOfNotes.remove()
+                    adapter.submitList(listOfNotes)
+                }
+                .show()
+
+        }
+
     }
 
     private fun showAddNoteDialog(){
