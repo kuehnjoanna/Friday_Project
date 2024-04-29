@@ -45,15 +45,18 @@ class MainActivity : AppCompatActivity() {
         //adding list to a view (?!)
         adapter.submitList(listOfNotes)
         binding.recyclerView.adapter = adapter
+
         adapter.setOnItemClickListener(object : NoteAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
 
-                listOfNotes.removeAt(position)
+               listOfNotes.removeAt(position)
                 adapter.notifyItemRemoved(position)
 Toast.makeText(this@MainActivity, "clicked! on $position", Toast.LENGTH_SHORT).show()
             }
         }
         )
+
+
 
 
       showAddNoteDialog()
@@ -69,25 +72,6 @@ Toast.makeText(this@MainActivity, "clicked! on $position", Toast.LENGTH_SHORT).s
         startAnimation(slideup)
     }
 
-    fun deleteNote (){
-
-        var binding = NoteItemBinding.inflate(layoutInflater)
-        val view = binding.root
-
-       binding.noteTitleTV.setOnClickListener {
-
-
-            AlertDialog.Builder(this)
-                .setTitle("delete?")
-                .setPositiveButton("yes"){_,_ ->
-                    //listOfNotes.remove()
-                    adapter.submitList(listOfNotes)
-                }
-                .show()
-
-        }
-
-    }
 
     private fun showAddNoteDialog(){
         binding.fabBTN.setOnClickListener {
@@ -108,25 +92,6 @@ Toast.makeText(this@MainActivity, "clicked! on $position", Toast.LENGTH_SHORT).s
                     Log.d("cancel note", "note adding was canceled")
                 }
                 .show()
-/*
-            val binding = DialogAddNoteBinding.inflate(layoutInflater)
-
-            val view2 = binding.root
-            setContentView(view2)
-            binding.closeBTN.setOnClickListener {
-
-                setContentView(view)
-            }
-
-            binding.addNewNoteBTN.setOnClickListener {
-               // val note = dataset[position]
-             //   binding.newNoteTitleET.text =
-                //new note
-              //  var newNote = Note()
-
-            }
-
- */
 
 
 

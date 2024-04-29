@@ -1,13 +1,18 @@
 package com.example.androidstrudiofridayproject.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidstrudiofridayproject.MainActivity
+import com.example.androidstrudiofridayproject.OpenNoteActivity
 import com.example.androidstrudiofridayproject.R
 import com.example.androidstrudiofridayproject.data.ItemDiffUtil
 import com.example.androidstrudiofridayproject.data.NotesList
@@ -33,11 +38,17 @@ private var dataset: MutableList<Note>
      * der ViewHolder umfasst die View uns stellt einen Listeneintrag dar
      */
     inner class ItemViewHolder(val binding: NoteItemBinding, listener: onItemClickListener) : RecyclerView.ViewHolder(binding.root){
+
         init {
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
+
+
             }
+
         }
+
+
     }
 
     /**
@@ -55,17 +66,24 @@ private var dataset: MutableList<Note>
         holder.binding.noteTitleTV.text = note.noteTitle
         holder.binding.noteBodyTV.text = note.noteBody
 
+        holder.binding.bigListItem.setOnClickListener {
+            val intent = Intent(context, OpenNoteActivity::class.java)
+            context.startActivity(intent)
+        }
 
 
-/*
         holder.binding.bigListItem.setOnLongClickListener {
 
 
             AlertDialog.Builder(context)
                 .setTitle("delete?")
+                .setIcon(R.drawable.delete)
                 .setPositiveButton("yes"){_,_ ->
-                    dataset = listOfNotes
-                 listOfNotes.remove(note)
+
+                 listOfNotes.removeAt(position)
+
+                    notifyItemRemoved(position)
+                    notifyDataSetChanged()
                     submitList(listOfNotes)
                 }
                 .show()
@@ -73,7 +91,7 @@ private var dataset: MutableList<Note>
             return@setOnLongClickListener true
         }
 
- */
+
 
 
 
